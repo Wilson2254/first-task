@@ -1,28 +1,34 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+      <HelloWorld />
+      <FormAddress />
+      <FormMain />
+      <FormPassport />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from "./components/HelloWorld.vue";
+import FormAddress from "./components/FormAddress.vue";
+import FormMain from "./components/FormMain.vue";
+import FormPassport from "./components/FormPassport.vue";
 
 export default {
-  name: 'App',
+  name: "App",
+  data() {
+    return {
+      showModal: false,
+    };
+  },
   components: {
-    HelloWorld
-  }
-}
+    HelloWorld,
+    FormAddress,
+    FormMain,
+    FormPassport,
+  },
+
+};
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
