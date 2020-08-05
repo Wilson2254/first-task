@@ -17,11 +17,7 @@
       </div>
       <div>
         Дата рождения*
-        <input
-          type="date"
-          v-model="birthDate"
-          @input="$v.dateObject.$touch"
-        />
+        <input type="date" v-model="birthDate" @input="$v.dateObject.$touch" />
         <div
           class="error"
           v-if="!$v.dateObject.required && $v.dateObject.$dirty || $v.dateObject.$error"
@@ -29,7 +25,12 @@
       </div>
       <p>
         Номер телефона
-        <input placeholder="Номер телефона" type="tel" v-model="phone"/>
+        <input
+          placeholder="Номер телефона"
+          type=" text"
+          v-model="phone"
+          @input="acceptNumber"
+        />
       </p>
       <p>
         Пол
@@ -56,7 +57,6 @@
 
 <script>
 import { required, maxValue, minValue } from "vuelidate/lib/validators";
-const isPhone = (value) => /^1(3|4|5|7|8)\d{9}$/.test(value);  //phone valid
 export default {
   data() {
     return {
@@ -85,7 +85,7 @@ export default {
       maxValue: maxValue(new Date()),
       minValue: minValue(new Date("1900-01-01")),
     },
-    phone: { required, phoneValid:isPhone },
+    phone: { required },
     gender: {},
     group: { required },
     doctor: {},
@@ -98,6 +98,13 @@ export default {
         return;
       }
       alert("Все норм");
+    },
+    acceptNumber() {
+      let x = this.phone
+        .replace(/\D/g, "")
+        .match(/(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})/);
+      console.log(x);
+      this.phone = !x[2] ? x[1] : x[1] + "-" + x[2] + (x[3] ? "-" + x[3] : "");
     },
   },
   computed: {
@@ -116,8 +123,6 @@ export default {
   color: green;
 }
 
-input {
-}
 ::-webkit-calendar-picker-indicator {
   display: none;
 }
