@@ -408,4 +408,30 @@ export default {
 ::-webkit-inner-spin-button {
   display: none;
 }
+
+@media screen and (max-width: 600px) {
+  .main_form {
+    font-size: 12pt;
+    margin: 15px 5px;
+    .basic, .adress, .passport {
+      h1,
+      .group {
+        margin-left: 5px;
+      }
+      .group {
+        margin-top: 5px;
+      }
+    }
+
+    .control {
+      display: flex;
+      flex-direction: row;
+      margin-left: 0;
+      .step {
+        margin-right: 10px;
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
 </style>>
