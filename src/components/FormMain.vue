@@ -1,187 +1,187 @@
 <template>
   <div class="main_form">
-    <div class="basic">
+    <div class="control">
+      <div class="step">
+        <a class="botr" @click="changeStep">Основное</a>
+      </div>
+      <div class="step">
+        <a class="botr" @click="changeStep">Адрес</a>
+      </div>
+      <div class="step">
+        <a class="botr" @click="changeStep">Паспорт</a>
+      </div>
+      <div class="step">
+        <a class="botr" @click="submitForm">Создать</a>
+      </div>
+    </div>
+    <div class="basic" :class="{hide: this.steps != 1, show: this.steps == 1}">
       <h1>Основное</h1>
 
-      <div class="field_row">
-        <div class="group">
-          <input
-            v-model.trim="$v.secondName.$model"
-            :class="{error:!$v.secondName.required && $v.secondName.$dirty}"
-          />
-          <div :class="{error:!$v.secondName.required && $v.secondName.$dirty}">
-            <span>*</span>Фамилия
-          </div>
-        </div>
-
-        <div class="group">
-          <input
-            v-model.trim="$v.firstName.$model"
-            :class="{error:!$v.firstName.required && $v.firstName.$dirty}"
-          />
-          <div :class="{error:!$v.firstName.required && $v.firstName.$dirty}">
-            <span>*</span>Имя
-          </div>
-        </div>
-
-        <div class="group">
-          <input v-model.trim="thirdName" />
-          <div>Отчество</div>
+      <div class="group" :class="{error:!$v.secondName.required && $v.secondName.$dirty}">
+        <input
+          v-model.trim="$v.secondName.$model"
+          :class="{error:!$v.secondName.required && $v.secondName.$dirty}"
+        />
+        <div :class="{error:!$v.secondName.required && $v.secondName.$dirty}">
+          <span>*</span>Фамилия
         </div>
       </div>
 
-      <div class="field_row">
-        <div class="group">
-          <input
-            type="date"
-            v-model="birthDate"
-            @input="$v.birthDateMask.$touch"
-            :class="{error:!$v.birthDateMask.required && $v.birthDateMask.$dirty || $v.birthDateMask.$error}"
-          />
-          <div
-            :class="{error: !$v.birthDateMask.required && $v.birthDateMask.$dirty || $v.birthDateMask.$error}"
-          >
-            <span>*</span>Дата рождения
-          </div>
-        </div>
-
-        <div class="group">
-          <input
-            placeholder="Номер телефона"
-            v-model="phone"
-            @input="acceptNumber"
-            :class="{error:this.phone.length != 14 && $v.phone.$dirty}"
-          />
-          <div :class="{error:this.phone.length != 14 && $v.phone.$dirty}">
-            <span>*</span>Номер телефона
-          </div>
-        </div>
-
-        <div class="group">
-          <input v-model.trim="gender" />
-          <div>Пол</div>
+      <div class="group">
+        <input
+          v-model.trim="$v.firstName.$model"
+          :class="{error:!$v.firstName.required && $v.firstName.$dirty}"
+        />
+        <div :class="{error:!$v.firstName.required && $v.firstName.$dirty}">
+          <span>*</span>Имя
         </div>
       </div>
 
-      <div class="field_row">
-        <div class="group">
-          <select
-            multiple
-            @mousedown="chooseClient"
-            v-model="group"
-            :class="{error:this.group.length == 0 && !$v.group.required && $v.group.$dirty}"
-          >
-            <option value="VIP">VIP</option>
-            <option value="Проблемные">Проблемные</option>
-            <option value="ОМС">ОМС</option>
-          </select>
-          <div :class="{error:this.group.length == 0 && !$v.group.required && $v.group.$dirty}">
-            <span>*</span>Группа клиентов
-          </div>
-          <div v-for="item in group" :key="item">- {{item}}</div>
-        </div>
+      <div class="group">
+        <input v-model.trim="thirdName" />
+        <div>Отчество</div>
+      </div>
 
-        <div class="group">
-          <select>
-            <option>Иванов</option>
-            <option>Захаров</option>
-            <option>Чернышева</option>
-          </select>
-          <div>Лечащий врач</div>
+      <div class="group">
+        <input
+          type="date"
+          v-model="birthDate"
+          @input="$v.birthDateMask.$touch"
+          :class="{error:!$v.birthDateMask.required && $v.birthDateMask.$dirty || $v.birthDateMask.$error}"
+        />
+        <div
+          :class="{error: !$v.birthDateMask.required && $v.birthDateMask.$dirty || $v.birthDateMask.$error}"
+        >
+          <span>*</span>Дата рождения
         </div>
+      </div>
 
-        <div class="group">
-          <input type="checkbox" />
-          Не отправлять СМС
+      <div class="group">
+        <input
+          placeholder="Номер телефона"
+          v-model="phone"
+          @input="acceptNumber"
+          :class="{error:this.phone.length != 14 && $v.phone.$dirty}"
+        />
+        <div :class="{error:this.phone.length != 14 && $v.phone.$dirty}">
+          <span>*</span>Номер телефона
         </div>
+      </div>
+
+      <div class="group">
+        <input v-model.trim="gender" />
+        <div>Пол</div>
+      </div>
+
+      <div class="group">
+        <select
+          multiple
+          @mousedown="chooseClient"
+          v-model="group"
+          :class="{error:this.group.length == 0 && !$v.group.required && $v.group.$dirty}"
+        >
+          <option value="VIP">VIP</option>
+          <option value="Проблемные">Проблемные</option>
+          <option value="ОМС">ОМС</option>
+        </select>
+        <div :class="{error:this.group.length == 0 && !$v.group.required && $v.group.$dirty}">
+          <span>*</span>Группа клиентов
+        </div>
+        <div v-for="item in group" :key="item">- {{item}}</div>
+      </div>
+
+      <div class="group">
+        <select>
+          <option>Иванов</option>
+          <option>Захаров</option>
+          <option>Чернышева</option>
+        </select>
+        <div>Лечащий врач</div>
+      </div>
+
+      <div class="group">
+        <input type="checkbox" />
+        Не отправлять СМС
       </div>
     </div>
-    <div class="adress">
+    <div class="adress" :class="{hide: this.steps != 2, show: this.steps == 2}">
       <h1>Адрес</h1>
-      <div class="field_row">
-        <div class="group">
-          <input v-model.trim="index" />
-          <div>Индекс</div>
-        </div>
+      <div class="group">
+        <input v-model.trim="index" />
+        <div>Индекс</div>
+      </div>
 
-        <div class="group">
-          <input v-model.trim="country" />
-          <div>Страна</div>
-        </div>
+      <div class="group">
+        <input v-model.trim="country" />
+        <div>Страна</div>
+      </div>
 
-        <div class="group">
-          <input v-model.trim="region" />
-          <div>Область</div>
+      <div class="group">
+        <input v-model.trim="region" />
+        <div>Область</div>
+      </div>
+
+      <div class="group">
+        <input v-model.trim="$v.city.$model" :class="{error:!$v.city.required && $v.city.$dirty}" />
+        <div :class="{error:!$v.city.required && $v.city.$dirty}">
+          <span>*</span>Город
         </div>
       </div>
 
-      <div class="field_row">
-        <div class="group">
-          <input v-model.trim="$v.city.$model" :class="{error:!$v.city.required && $v.city.$dirty}" />
-          <div :class="{error:!$v.city.required && $v.city.$dirty}">
-            <span>*</span>Город
-          </div>
-        </div>
+      <div class="group">
+        <input v-model.trim="street" />
+        <div>Улица</div>
+      </div>
 
-        <div class="group">
-          <input v-model.trim="street" />
-          <div>Улица</div>
-        </div>
-
-        <div class="group">
-          <input v-model.trim="house" />
-          <div>Дом</div>
-        </div>
+      <div class="group">
+        <input v-model.trim="house" />
+        <div>Дом</div>
       </div>
     </div>
 
-    <div class="passport">
+    <div class="passport" :class="{hide: this.steps != 3, show: this.steps == 3}">
       <h1>Паспорт</h1>
 
-      <div class="field_row">
-        <div div class="group">
-          <select>
-            <option>Паспорт</option>
-            <option>Свидетельство о рождении</option>
-            <option>Вод. удостоверение</option>
-          </select>
-          <div>
-            <span>*</span>Тип документа
-          </div>
-        </div>
-
-        <div class="group">
-          <input v-model.trim="series" />
-          <div>Серия</div>
-        </div>
-
-        <div class="group">
-          <input v-model.trim="num" />
-          <div>Номер</div>
+      <div div class="group">
+        <select>
+          <option>Паспорт</option>
+          <option>Свидетельство о рождении</option>
+          <option>Вод. удостоверение</option>
+        </select>
+        <div>
+          <span>*</span>Тип документа
         </div>
       </div>
-      <div class="field_row">
-        <div class="group">
-          <input v-model.trim="whoGive" />
-          <div>Кем выдан</div>
-        </div>
 
-        <div class="group">
-          <input
-            type="date"
-            v-model="giveDate"
-            @input="$v.giveDateMask.$touch"
-            :class="{error:!$v.giveDateMask.required && $v.giveDateMask.$dirty || $v.giveDateMask.$error}"
-          />
-          <div
-            :class="{error:!$v.giveDateMask.required && $v.giveDateMask.$dirty || $v.giveDateMask.$error}"
-          >
-            <span>*</span>Дата выдачи
-          </div>
+      <div class="group">
+        <input v-model.trim="series" />
+        <div>Серия</div>
+      </div>
+
+      <div class="group">
+        <input v-model.trim="num" />
+        <div>Номер</div>
+      </div>
+
+      <div class="group">
+        <input v-model.trim="whoGive" />
+        <div>Кем выдан</div>
+      </div>
+
+      <div class="group">
+        <input
+          type="date"
+          v-model="giveDate"
+          @input="$v.giveDateMask.$touch"
+          :class="{error:!$v.giveDateMask.required && $v.giveDateMask.$dirty || $v.giveDateMask.$error}"
+        />
+        <div
+          :class="{error:!$v.giveDateMask.required && $v.giveDateMask.$dirty || $v.giveDateMask.$error}"
+        >
+          <span>*</span>Дата выдачи
         </div>
       </div>
     </div>
-    <div><button @click="submitForm">Отправить</button></div>
   </div>
 </template>
 
@@ -192,7 +192,7 @@ let ourDate =
   "-" +
   String(new Date().getMonth() + 1).padStart(2, "0") +
   "-" +
-  String(new Date().getDate()).padStart(2, "0");
+  String(new Date().getDate() - 1).padStart(2, "0");
 export default {
   data() {
     return {
@@ -237,6 +237,7 @@ export default {
     submitForm() {
       if (this.$v.$invalid) {
         this.$v.$touch();
+        this.steps = 1;
         return;
       } else {
         alert("Все норм");
@@ -271,6 +272,12 @@ export default {
         }
       }
     },
+    changeStep(e) {
+      var el = e.target;
+      if (el.text == "Основное") this.steps = 1;
+      if (el.text == "Адрес") this.steps = 2;
+      if (el.text == "Паспорт") this.steps = 3;
+    },
   },
   computed: {
     birthDateMask() {
@@ -289,15 +296,15 @@ export default {
   font-size: 14pt;
   text-transform: uppercase;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
 
   .basic,
   .adress,
   .passport {
     h1 {
-      text-align: center;
-      font-size: 22pt;
+      margin-left: 15px;
+      font-size: 18pt;
     }
     .field_row {
       display: flex;
@@ -308,7 +315,7 @@ export default {
       overflow: hidden;
       border: 1px solid;
       text-align: center;
-      width: 200px;
+      width: 300px;
       font-size: 14pt;
     }
     span {
@@ -321,12 +328,11 @@ export default {
       input:not([type="checkbox"]) {
         font-size: 14pt;
         display: block;
-        width: 200px;
+        width: 300px;
         border: none;
         border-bottom: 1px solid;
         &:focus {
           outline: none;
-          background-color: #fffff0;
         }
       }
       input[type="checkbox"] {
@@ -335,6 +341,34 @@ export default {
       }
     }
   }
+  .control {
+    margin-left: 20px;
+    .step {
+      margin-bottom: 50px;
+      margin-right: 100px;
+      border-bottom: 2px solid black;
+      .botr {
+        cursor: pointer;
+        text-decoration: none;
+        transition-duration: 0.2s;
+        transition-delay: 0.1s;
+        user-select: none;
+        &:hover {
+          color: gray;
+        }
+      }
+    }
+  }
+}
+
+.hide {
+  display: none;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.show {
+  display: auto;
+  opacity: 0.9;
 }
 
 .error {
