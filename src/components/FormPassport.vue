@@ -22,10 +22,10 @@
     </div>
     <div>
       Дата выдачи*
-      <input type="date" placeholder="Улица"  v-model="dateGive" @input="$v.dateObject.$touch"/>
+      <input type="date" v-model="giveDate" @input="$v.giveDateMask.$touch"/>
       <div
           class="error"
-          v-if="!$v.dateObject.required && $v.dateObject.$dirty || $v.dateObject.$error"
+          v-if="!$v.giveDateMask.required && $v.giveDateMask.$dirty || $v.giveDateMask.$error"
         >Некорректная дата</div>
     </div>
     <div>
@@ -43,7 +43,7 @@ export default {
       series: "",
       num: "",
       whoGive: "",
-      dateGive:
+      giveDate:
         new Date().getFullYear() +
         "-" +
         String(new Date().getMonth() + 1).padStart(2, "0") +
@@ -55,8 +55,8 @@ export default {
   validations: {
     series: {},
     num: {},
-    dateGive: {},
-    dateObject: {
+    giveDate: {},
+    giveDateMask: {
       required,
       maxValue: maxValue(new Date()),
       minValue: minValue(new Date("1900-01-01")),
@@ -65,8 +65,8 @@ export default {
   },
 
   computed: {
-    dateObject() {
-      return this.dateGive ? new Date(this.dateGive) : null;
+    giveDateMask() {
+      return this.giveDate ? new Date(this.giveDate) : null;
     },
   },
 };
