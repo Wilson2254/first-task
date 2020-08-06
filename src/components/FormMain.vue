@@ -13,7 +13,7 @@
       </div>
       <div>
         Отчество
-        <input placeholder="Отчество" />
+        <input placeholder="Отчество" v-model.trim="$v.thirdName.$model" />
       </div>
       <div>
         Дата рождения*
@@ -23,7 +23,7 @@
           v-if="!$v.dateObject.required && $v.dateObject.$dirty || $v.dateObject.$error"
         >Некорректная дата</div>
       </div>
-      <p>
+      <div>
         Номер телефона
         <input
           placeholder="Номер телефона"
@@ -31,16 +31,27 @@
           v-model="phone"
           @input="acceptNumber"
         />
-      </p>
+      </div>
+      <div
+        class="error"
+        v-if="this.phone.length != 14 && $v.phone.$dirty"
+      >Укажите правильный номер телефона</div>
       <p>
         Пол
         <input placeholder="Пол" />
-      </p>Группа клиентов*
-      <select multiple>
-        <option value="volvo">VIP</option>
-        <option value="saab">Проблемные</option>
-        <option value="opel">ОМС</option>
-      </select>
+      </p>
+      <div>
+        Группа клиентов*
+        <select multiple @mousedown="chooseClient" v-model="group">
+          <option value="VIP">VIP</option>
+          <option value="Проблемные">Проблемные</option>
+          <option value="ОМС">ОМС</option>
+        </select>
+      </div>
+      <div
+        class="error"
+        v-if="this.group.length == 0 && !$v.group.required && $v.group.$dirty"
+      >Балбес?</div>
       <p>
         Лечащий врач
         <select>
@@ -69,42 +80,62 @@ export default {
         String(new Date().getMonth() + 1).padStart(2, "0") +
         "-" +
         String(new Date().getDate()).padStart(2, "0"),
-      phone: "",
-      gender: "",
-      group: "",
-      doctor: "",
-      sendSMS: false,
+      phone: "7",
+      group: [],
     };
   },
   validations: {
     secondName: { required },
     firstName: { required },
-    thirdName: {}, //Отчество
+    thirdName: {},
     dateObject: {
       required,
       maxValue: maxValue(new Date()),
       minValue: minValue(new Date("1900-01-01")),
     },
     phone: { required },
-    gender: {},
     group: { required },
-    doctor: {},
-    sendSMS: false,
   },
   methods: {
     submitForm() {
       if (this.$v.$invalid) {
         this.$v.$touch();
+        console.log(this.phone.length);
         return;
+      } else {
+        alert("Все норм");
       }
-      alert("Все норм");
     },
     acceptNumber() {
       let x = this.phone
         .replace(/\D/g, "")
-        .match(/(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})/);
-      console.log(x);
-      this.phone = !x[2] ? x[1] : x[1] + "-" + x[2] + (x[3] ? "-" + x[3] : "");
+        .match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,4})/);
+      if (x[1] !== 7) x[1] = 7;
+      this.phone = !x[2]
+        ? x[1]
+        : x[1] +
+          "-" +
+          x[2] +
+          (x[3] ? "-" + x[3] : "") +
+          (x[4] ? "-" + x[4] : "");
+    },
+    chooseClient(e) {
+      var el = e.target;
+      if (
+        el.tagName.toLowerCase() == "option" &&
+        el.parentNode.hasAttribute("multiple")
+      ) {
+        e.preventDefault();
+        if (el.hasAttribute("selected")) {
+          el.removeAttribute("selected");
+          this.group.splice(this.group.indexOf(el) - 1, 1);
+          console.log(this.group);
+        } else {
+          el.setAttribute("selected", "");
+          this.group.push(el.value);
+          console.log(this.group);
+        }
+      }
     },
   },
   computed: {
@@ -115,7 +146,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .error {
   color: red;
 }
