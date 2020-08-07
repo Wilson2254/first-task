@@ -4,10 +4,10 @@
       <h2>Новый клиент успешно создан</h2>
     </div>
     <div class="info">
-        <slot> </slot>
+      <slot></slot>
     </div>
     <div class="footer">
-      <div class="close" @click="closeModal">ОК</div>
+      <div class="close" @click="closeModal">Закрыть</div>
     </div>
   </div>
 </template>
@@ -24,11 +24,23 @@ export default {
 
 <style lang="scss" scoped>
 .modal {
-    font-weight: 600;
+  font-weight: 600;
   position: absolute;
   z-index: 1;
-  height: 97%;
-  width: 98%;
+  height: 100%;
   opacity: 0.8;
+  .footer{
+      .close{
+          background: darkolivegreen;;
+          cursor: pointer;
+          width: 150px;
+          text-align: center;
+          border: 2px solid;
+          opacity: 1;
+          &:hover{
+              opacity: 0.7;
+          }
+      }
+  }
 }
 </style>

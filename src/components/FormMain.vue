@@ -1,26 +1,29 @@
 <template>
   <div class="main_form">
-    <Modal v-if="modal" @closeModal="closeInfoModal">
-      <p>Фамилия: {{this.secondName}}</p>
-      <p>Имя: {{this.firstName}}</p>
-      <p>Отчество: {{this.thirdName}}</p>
-      <p>Дата рождения: {{this.birthDate}}</p>
-      <p>Пол: {{this.gender}}</p>
-      <p>Группа клиентов: {{this.group.join(' | ')}}</p>
-      <p>Лечащий врач: {{this.doctor}}</p>
-      <p>Отправлять смс: {{this.sms? "НЕТ" : "ДА"}}</p>
-      <p>Индекс: {{this.index}}</p>
-      <p>Страна: {{this.country}}</p>
-      <p>Область: {{this.region}}</p>
-      <p>Город: {{this.city}}</p>
-      <p>Улица: {{this.street}}</p>
-      <p>Дом: {{this.house}}</p>
-      <p>Документ: {{this.docum}}</p>
-      <p>Серия: {{this.series}}</p>
-      <p>Номер: {{this.num}}</p>
-      <p>Кем выдан: {{this.whoGive}}</p>
-      <p>Дата выдачи: {{this.giveDate}}</p>
-    </Modal>
+    <div class="modal">
+      <Modal v-if="modal" @closeModal="closeInfoModal">
+        <p>Фамилия: {{this.secondName}}</p>
+        <p>Имя: {{this.firstName}}</p>
+        <p>Отчество: {{this.thirdName}}</p>
+        <p>Дата рождения: {{this.birthDate}}</p>
+        <p>Пол: {{this.gender}}</p>
+        <p>Группа клиентов: {{this.group.join(' | ')}}</p>
+        <p>Лечащий врач: {{this.doctor}}</p>
+        <p>Отправлять смс: {{this.sms? "НЕТ" : "ДА"}}</p>
+        <p>Индекс: {{this.index}}</p>
+        <p>Страна: {{this.country}}</p>
+        <p>Область: {{this.region}}</p>
+        <p>Город: {{this.city}}</p>
+        <p>Улица: {{this.street}}</p>
+        <p>Дом: {{this.house}}</p>
+        <p>Документ: {{this.docum}}</p>
+        <p>Серия: {{this.series}}</p>
+        <p>Номер: {{this.num}}</p>
+        <p>Кем выдан: {{this.whoGive}}</p>
+        <p>Дата выдачи: {{this.giveDate}}</p>
+      </Modal>
+    </div>
+
     <div class="control">
       <div class="step">
         <a class="botr" @click="changeStep">Основное</a>
@@ -435,6 +438,11 @@ export default {
       transform: translate3d(4px, 0, 0);
     }
   }
+}
+
+.modal{
+  width: 100%;
+  height: 100%;
 }
 
 ::-webkit-calendar-picker-indicator {
