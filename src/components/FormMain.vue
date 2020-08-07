@@ -1,5 +1,26 @@
 <template>
   <div class="main_form">
+    <Modal v-if="modal" @closeModal="closeInfoModal">
+      <p>Фамилия: {{this.secondName}}</p>
+      <p>Имя: {{this.firstName}}</p>
+      <p>Отчество: {{this.thirdName}}</p>
+      <p>Дата рождения: {{this.birthDate}}</p>
+      <p>Пол: {{this.gender}}</p>
+      <p>Группа клиентов: {{this.group.join(' | ')}}</p>
+      <p>Лечащий врач: {{this.doctor}}</p>
+      <p>Отправлять смс: {{this.sms? "НЕТ" : "ДА"}}</p>
+      <p>Индекс: {{this.index}}</p>
+      <p>Страна: {{this.country}}</p>
+      <p>Область: {{this.region}}</p>
+      <p>Город: {{this.city}}</p>
+      <p>Улица: {{this.street}}</p>
+      <p>Дом: {{this.house}}</p>
+      <p>Документ: {{this.docum}}</p>
+      <p>Серия: {{this.series}}</p>
+      <p>Номер: {{this.num}}</p>
+      <p>Кем выдан: {{this.whoGive}}</p>
+      <p>Дата выдачи: {{this.giveDate}}</p>
+    </Modal>
     <div class="control">
       <div class="step">
         <a class="botr" @click="changeStep">Основное</a>
@@ -91,7 +112,7 @@
       </div>
 
       <div class="group">
-        <select>
+        <select v-model="doctor">
           <option>Иванов</option>
           <option>Захаров</option>
           <option>Чернышева</option>
@@ -100,7 +121,7 @@
       </div>
 
       <div class="group">
-        <input type="checkbox" />
+        <input type="checkbox" v-model="sms" />
         Не отправлять СМС
       </div>
     </div>
@@ -143,7 +164,7 @@
       <h1>Паспорт</h1>
 
       <div div class="group">
-        <select>
+        <select v-model="docum">
           <option>Паспорт</option>
           <option>Свидетельство о рождении</option>
           <option>Вод. удостоверение</option>
@@ -186,6 +207,7 @@
 </template>
 
 <script>
+import Modal from "./Modal/Modal.vue";
 import { required, maxValue, minValue } from "vuelidate/lib/validators";
 let ourDate =
   new Date().getFullYear() +
@@ -197,6 +219,7 @@ export default {
   data() {
     return {
       steps: 1,
+      modal: false,
       secondName: "",
       firstName: "",
       thirdName: "", //Отчество
@@ -204,6 +227,8 @@ export default {
       phone: "7",
       gender: "",
       group: [],
+      doctor: "Иванов",
+      sms: false,
       giveDate: ourDate,
       index: "",
       country: "",
@@ -211,10 +236,14 @@ export default {
       city: "",
       street: "",
       house: "",
+      docum: "Паспорт",
       series: "",
       num: "",
       whoGive: "",
     };
+  },
+  components: {
+    Modal,
   },
   validations: {
     secondName: { required },
@@ -240,8 +269,14 @@ export default {
         this.steps = 1;
         return;
       } else {
-        alert("Все норм");
+        this.showModal();
       }
+    },
+    showModal() {
+      this.modal = true;
+    },
+    closeInfoModal() {
+      this.modal = false;
     },
     acceptNumber() {
       let x = this.phone
@@ -413,7 +448,9 @@ export default {
   .main_form {
     font-size: 12pt;
     margin: 15px 5px;
-    .basic, .adress, .passport {
+    .basic,
+    .adress,
+    .passport {
       h1,
       .group {
         margin-left: 5px;
