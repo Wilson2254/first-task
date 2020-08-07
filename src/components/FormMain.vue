@@ -1,5 +1,6 @@
 <template>
   <div class="main_form">
+    <!-- Модальное окно с созданным клиентом -->
     <div class="modal">
       <Modal v-if="modal" @closeModal="closeInfoModal">
         <p>Фамилия: {{this.secondName}}</p>
@@ -24,23 +25,28 @@
       </Modal>
     </div>
 
+    <!-- Блок переключения между частями формы -->
     <div class="control">
       <div class="step">
-        <a class="botr" @click="changeStep">Основное</a>
+        <a class="step_rule" @click="changeStep">Основное</a>
       </div>
       <div class="step">
-        <a class="botr" @click="changeStep">Адрес</a>
+        <a class="step_rule" @click="changeStep">Адрес</a>
       </div>
       <div class="step">
-        <a class="botr" @click="changeStep">Паспорт</a>
+        <a class="step_rule" @click="changeStep">Паспорт</a>
       </div>
       <div class="step">
-        <a class="botr" @click="submitForm">Создать</a>
+        <a class="step_rule" @click="submitForm">Создать</a>
       </div>
     </div>
+
+    <!-- Форма основной информации -->
     <div class="basic" :class="{hide: this.steps != 1}">
       <h1>Основное</h1>
 
+      <!-- Валидация фамилии -->
+      <!-- Применяю класс ошибки, если инпут пустой или был стерт -->
       <div class="group" :class="{error:!$v.secondName.required && $v.secondName.$dirty}">
         <input
           v-model.trim="$v.secondName.$model"
@@ -51,6 +57,8 @@
         </div>
       </div>
 
+      <!-- Валидация имени  -->
+      <!-- Применяю класс ошибки, если инпут пустой или был стерт -->
       <div class="group">
         <input
           v-model.trim="$v.firstName.$model"
@@ -61,11 +69,14 @@
         </div>
       </div>
 
+      <!-- Отчество -->
       <div class="group">
         <input v-model.trim="thirdName" />
         <div>Отчество</div>
       </div>
 
+      <!-- Валидации даты рождения-->
+      <!-- Применяю класс ошибки, если дата пустая или была стерта, а также на каждое изменение вызываю проверку по маске -->
       <div class="group">
         <input
           type="date"
@@ -80,6 +91,8 @@
         </div>
       </div>
 
+      <!-- Валидация телефона (с помощью регулярок) -->
+      <!-- Применяю класс ошибки, если телефон инпут телефона меньше 14 символов -->
       <div class="group">
         <input
           placeholder="Номер телефона"
@@ -92,11 +105,14 @@
         </div>
       </div>
 
+      <!-- Пол -->
       <div class="group">
         <input v-model.trim="gender" />
         <div>Пол</div>
       </div>
 
+      <!-- Валидация группы клиентов -->
+      <!-- Применяю класс ошибки, если массив группы пустой или из него были удалены элементы -->
       <div class="group">
         <select
           multiple
@@ -110,10 +126,12 @@
         </select>
         <div :class="{error:this.group.length == 0 && !$v.group.required && $v.group.$dirty}">
           <span>*</span>Группа клиентов
+          <!-- Вывод выбранной группы -->
         </div>
         <div v-for="item in group" :key="item">- {{item}}</div>
       </div>
 
+      <!-- Лечащий врач -->
       <div class="group">
         <select v-model="doctor">
           <option>Иванов</option>
@@ -123,28 +141,37 @@
         <div>Лечащий врач</div>
       </div>
 
+      <!-- Смс -->
       <div class="group">
         <input type="checkbox" v-model="sms" />
         Не отправлять СМС
       </div>
     </div>
+
+    <!-- Форма адреса -->
     <div class="adress" :class="{hide: this.steps != 2}">
       <h1>Адрес</h1>
+
+      <!-- Индекс -->
       <div class="group">
         <input v-model.trim="index" />
         <div>Индекс</div>
       </div>
 
+      <!-- Страна -->
       <div class="group">
         <input v-model.trim="country" />
         <div>Страна</div>
       </div>
 
+      <!-- Область -->
       <div class="group">
         <input v-model.trim="region" />
         <div>Область</div>
       </div>
 
+      <!-- Валидация города -->
+      <!-- Применяю класс ошибки, если инпут пустой или был стерт -->
       <div class="group">
         <input v-model.trim="$v.city.$model" :class="{error:!$v.city.required && $v.city.$dirty}" />
         <div :class="{error:!$v.city.required && $v.city.$dirty}">
@@ -152,20 +179,24 @@
         </div>
       </div>
 
+      <!-- Улица -->
       <div class="group">
         <input v-model.trim="street" />
         <div>Улица</div>
       </div>
 
+      <!-- Дом -->
       <div class="group">
         <input v-model.trim="house" />
         <div>Дом</div>
       </div>
     </div>
 
+    <!-- Форма документных данных -->
     <div class="passport" :class="{hide: this.steps != 3}">
       <h1>Паспорт</h1>
 
+      <!-- Тип документа -->
       <div div class="group">
         <select v-model="docum">
           <option>Паспорт</option>
@@ -177,21 +208,26 @@
         </div>
       </div>
 
+      <!-- Серия -->
       <div class="group">
         <input v-model.trim="series" />
         <div>Серия</div>
       </div>
 
+      <!-- Номер -->
       <div class="group">
         <input v-model.trim="num" />
         <div>Номер</div>
       </div>
 
+      <!-- Кем выдан -->
       <div class="group">
         <input v-model.trim="whoGive" />
         <div>Кем выдан</div>
       </div>
 
+      <!-- Валидация даты выдачи -->
+      <!-- Применяю класс ошибки, также как и с датой рождения -->
       <div class="group">
         <input
           type="date"
@@ -210,8 +246,9 @@
 </template>
 
 <script>
-import Modal from "./Modal/Modal.vue";
-import { required, maxValue, minValue } from "vuelidate/lib/validators";
+import Modal from "./Modal/Modal.vue"; //Подключаю модалку
+import { required, maxValue, minValue } from "vuelidate/lib/validators"; //Используемые параметры у Vuelidate
+// Создаю дефолтную текущую дату (чтоб вывводить ее в начале), формат ГГ-ММ-ДД
 let ourDate =
   new Date().getFullYear() +
   "-" +
@@ -221,8 +258,8 @@ let ourDate =
 export default {
   data() {
     return {
-      steps: 1,
-      modal: false,
+      steps: 1, //Шаги для переключения между частями формы
+      modal: false, //Для вызова модалки
       secondName: "",
       firstName: "",
       thirdName: "", //Отчество
@@ -246,12 +283,14 @@ export default {
     };
   },
   components: {
-    Modal,
+    Modal, //Зарегестрировал Модалку
   },
   validations: {
+    // Указываю параметры валидации для контректного поля, (required - не должна быть пустой)
     secondName: { required },
     firstName: { required },
     birthDateMask: {
+      // Дата должна быть заполнена, не должна быть больше текущего и меньше 1900 года
       required,
       maxValue: maxValue(new Date()),
       minValue: minValue(new Date("1900-01-01")),
@@ -266,27 +305,36 @@ export default {
     },
   },
   methods: {
+    // Проверка на валидность всех полей, которые я указал
     submitForm() {
       if (this.$v.$invalid) {
-        this.$v.$touch();
-        this.steps = 1;
+        this.$v.$touch(); // Если есть что-то не валидное, то показываю какие
+        this.steps = 1; // Переключаюсь на первую часть
         return;
       } else {
+        //Если все ок, то показываю модалку
         this.showModal();
-        this.steps = 2;
+        this.steps = 2; //Просто переключаюсь на вторую часть (можно и не переключаться)
       }
     },
+
+    // Показ модалки
     showModal() {
       this.modal = true;
     },
+
+    // Закрытие модалки
     closeInfoModal() {
       this.modal = false;
     },
+
+    // Использую регулярки для маски телефона
     acceptNumber() {
       let x = this.phone
-        .replace(/\D/g, "")
-        .match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,4})/);
-      if (x[1] !== 7) x[1] = 7;
+        .replace(/\D/g, "") //Удаляю все кроме цифр
+        .match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,4})/); //Маска
+      if (x[1] !== 7) x[1] = 7; //Первый символ всегда будет 7
+      //Так как получается массив, то я вывожу его правильно последовательностью
       this.phone = !x[2]
         ? x[1]
         : x[1] +
@@ -295,37 +343,51 @@ export default {
           (x[3] ? "-" + x[3] : "") +
           (x[4] ? "-" + x[4] : "");
     },
+
+    // Выбор группы клиентов
     chooseClient(e) {
-      var el = e.target;
+      var el = e.target; //Ловлю текущую группу на которую нажал
+      //Проверяю что я нажал на пунт меню
       if (
         el.tagName.toLowerCase() == "option" &&
         el.parentNode.hasAttribute("multiple")
       ) {
-        e.preventDefault();
+        e.preventDefault(); //Отключаю выбор меню с зажатым CTRL или SHIFT
+        // Если атрибут был выбран, то удаляю его из массивы групп
         if (el.hasAttribute("selected")) {
           el.removeAttribute("selected");
           this.group.splice(this.group.indexOf(el.value), 1);
         } else {
+          // Или наоборот добавляю выбранную группу
           el.setAttribute("selected", "");
           this.group.push(el.value);
         }
       }
     },
+
+    // Перевелючение по частям формы
     changeStep(e) {
       var el = e.target;
+      // Просто смотрю что выбрал и меняю шаг
       if (el.text == "Основное") this.steps = 1;
       if (el.text == "Адрес") this.steps = 2;
       if (el.text == "Паспорт") this.steps = 3;
     },
   },
+
   computed: {
+    // Через эти свойства возвращаем либо правильную дату, либо ничего
     birthDateMask() {
       return this.birthDate ? new Date(this.birthDate) : null;
     },
+
+    // Через эти свойства возвращаем либо правильную дату, либо ничего
     giveDateMask() {
       return this.giveDate ? new Date(this.giveDate) : null;
     },
   },
+
+  // Здесь просто работа с LocalStorage (Каждый раз записываю изменения в LocalStorage)
   watch: {
     firstName(newInput) {
       localStorage.firstName = newInput;
@@ -385,6 +447,8 @@ export default {
       localStorage.giveDate = newInput;
     },
   },
+
+  // Считываю из LocalStorage, если он не пустой
   mounted() {
     if (localStorage.firstName) this.firstName = localStorage.firstName;
     if (localStorage.secondName) this.secondName = localStorage.secondName;
@@ -410,6 +474,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// Основная часть
 .main_form {
   margin: 20px;
   font-size: 14pt;
@@ -417,7 +482,6 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-
   .basic,
   .adress,
   .passport {
@@ -466,7 +530,7 @@ export default {
       margin-bottom: 50px;
       margin-right: 100px;
       border-bottom: 2px solid black;
-      .botr {
+      .step_rule {
         cursor: pointer;
         text-decoration: none;
         transition-duration: 0.2s;
@@ -478,13 +542,19 @@ export default {
       }
     }
   }
+  .modal {
+    width: 100%;
+    height: 100%;
+  }
 }
 
+// Класс для скрытия часте формы
 .hide {
   display: none;
   transition: opacity 0.5s ease-in-out;
 }
 
+// Подсветка ошибок
 .error {
   color: red;
   border-bottom-color: red;
@@ -516,18 +586,13 @@ export default {
   }
 }
 
-.modal {
-  width: 100%;
-  height: 100%;
-}
 
+// Отключаю значок календаря
 ::-webkit-calendar-picker-indicator {
   display: none;
 }
-::-webkit-inner-spin-button {
-  display: none;
-}
 
+// Адаптивность для разных устройств
 @media screen and (max-width: 600px) {
   .main_form {
     font-size: 12pt;

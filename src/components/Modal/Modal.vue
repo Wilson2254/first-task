@@ -15,6 +15,7 @@
 <script>
 export default {
   methods: {
+    // Обращаюсь к родительскому элементу для заркытия модального окна
     closeModal() {
       this.$emit("closeModal");
     },
@@ -23,6 +24,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// Вывод модального окна поверх основного
 .modal {
   font-weight: 600;
   position: absolute;
