@@ -38,7 +38,7 @@
         <a class="botr" @click="submitForm">Создать</a>
       </div>
     </div>
-    <div class="basic" :class="{hide: this.steps != 1, show: this.steps == 1}">
+    <div class="basic" :class="{hide: this.steps != 1}">
       <h1>Основное</h1>
 
       <div class="group" :class="{error:!$v.secondName.required && $v.secondName.$dirty}">
@@ -128,7 +128,7 @@
         Не отправлять СМС
       </div>
     </div>
-    <div class="adress" :class="{hide: this.steps != 2, show: this.steps == 2}">
+    <div class="adress" :class="{hide: this.steps != 2}">
       <h1>Адрес</h1>
       <div class="group">
         <input v-model.trim="index" />
@@ -163,7 +163,7 @@
       </div>
     </div>
 
-    <div class="passport" :class="{hide: this.steps != 3, show: this.steps == 3}">
+    <div class="passport" :class="{hide: this.steps != 3}">
       <h1>Паспорт</h1>
 
       <div div class="group">
@@ -273,6 +273,7 @@ export default {
         return;
       } else {
         this.showModal();
+        this.steps = 2;
       }
     },
     showModal() {
@@ -324,6 +325,86 @@ export default {
     giveDateMask() {
       return this.giveDate ? new Date(this.giveDate) : null;
     },
+  },
+  watch: {
+    firstName(newInput) {
+      localStorage.firstName = newInput;
+    },
+    secondName(newInput) {
+      localStorage.secondName = newInput;
+    },
+    thirdName(newInput) {
+      localStorage.thirdName = newInput;
+    },
+    birthDate(newInput) {
+      localStorage.birthDate = newInput;
+    },
+    phone(newInput) {
+      localStorage.phone = newInput;
+    },
+    gender(newInput) {
+      localStorage.gender = newInput;
+    },
+    doctor(newInput) {
+      localStorage.doctor = newInput;
+    },
+    sms(newInput) {
+      localStorage.sms = newInput;
+    },
+    index(newInput) {
+      localStorage.index = newInput;
+    },
+    country(newInput) {
+      localStorage.country = newInput;
+    },
+    region(newInput) {
+      localStorage.region = newInput;
+    },
+    city(newInput) {
+      localStorage.city = newInput;
+    },
+    street(newInput) {
+      localStorage.street = newInput;
+    },
+    house(newInput) {
+      localStorage.house = newInput;
+    },
+    docum(newInput) {
+      localStorage.docum = newInput;
+    },
+    series(newInput) {
+      localStorage.series = newInput;
+    },
+    num(newInput) {
+      localStorage.num = newInput;
+    },
+    whoGive(newInput) {
+      localStorage.whoGive = newInput;
+    },
+    giveDate(newInput) {
+      localStorage.giveDate = newInput;
+    },
+  },
+  mounted() {
+    if (localStorage.firstName) this.firstName = localStorage.firstName;
+    if (localStorage.secondName) this.secondName = localStorage.secondName;
+    if (localStorage.thirdName) this.thirdName = localStorage.thirdName;
+    if (localStorage.birthDate) this.birthDate = localStorage.birthDate;
+    if (localStorage.phone) this.phone = localStorage.phone;
+    if (localStorage.gender) this.gender = localStorage.gender;
+    if (localStorage.doctor) this.doctor = localStorage.doctor;
+    if (localStorage.sms) this.sms = localStorage.sms;
+    if (localStorage.index) this.index = localStorage.index;
+    if (localStorage.country) this.country = localStorage.country;
+    if (localStorage.region) this.region = localStorage.region;
+    if (localStorage.city) this.city = localStorage.city;
+    if (localStorage.street) this.street = localStorage.street;
+    if (localStorage.house) this.house = localStorage.house;
+    if (localStorage.docum) this.docum = localStorage.docum;
+    if (localStorage.series) this.series = localStorage.series;
+    if (localStorage.num) this.num = localStorage.num;
+    if (localStorage.whoGive) this.whoGive = localStorage.whoGive;
+    if (localStorage.giveDate) this.giveDate = localStorage.giveDate;
   },
 };
 </script>
@@ -404,11 +485,6 @@ export default {
   transition: opacity 0.5s ease-in-out;
 }
 
-.show {
-  display: auto;
-  opacity: 0.9;
-}
-
 .error {
   color: red;
   border-bottom-color: red;
@@ -440,7 +516,7 @@ export default {
   }
 }
 
-.modal{
+.modal {
   width: 100%;
   height: 100%;
 }
@@ -471,6 +547,8 @@ export default {
     .control {
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
       margin-left: 0;
       .step {
         margin-right: 10px;

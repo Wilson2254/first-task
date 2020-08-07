@@ -26,7 +26,7 @@ export default {
 .modal {
   font-weight: 600;
   position: absolute;
-  z-index: 1;
+  z-index: 10;
   height: 100%;
   opacity: 0.8;
   .footer{
