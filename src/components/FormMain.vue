@@ -3,25 +3,29 @@
     <!-- Модальное окно с созданным клиентом -->
     <div class="modal">
       <Modal v-if="modal" @closeModal="closeInfoModal">
-        <p>Фамилия: {{this.secondName}}</p>
-        <p>Имя: {{this.firstName}}</p>
-        <p>Отчество: {{this.thirdName}}</p>
-        <p>Дата рождения: {{this.birthDate}}</p>
-        <p>Пол: {{this.gender}}</p>
-        <p>Группа клиентов: {{this.group.join(' | ')}}</p>
-        <p>Лечащий врач: {{this.doctor}}</p>
-        <p>Отправлять смс: {{this.sms? "НЕТ" : "ДА"}}</p>
-        <p>Индекс: {{this.index}}</p>
-        <p>Страна: {{this.country}}</p>
-        <p>Область: {{this.region}}</p>
-        <p>Город: {{this.city}}</p>
-        <p>Улица: {{this.street}}</p>
-        <p>Дом: {{this.house}}</p>
-        <p>Документ: {{this.docum}}</p>
-        <p>Серия: {{this.series}}</p>
-        <p>Номер: {{this.num}}</p>
-        <p>Кем выдан: {{this.whoGive}}</p>
-        <p>Дата выдачи: {{this.giveDate}}</p>
+        <div
+          v-for="(name, value) in info"
+          :key="value"
+        >{{value }} : {{ name !== "" ? name : "Не заполнено" }}</div>
+        <!-- <p>Фамилия: {{this.info.secondName}}</p>
+        <p>Имя: {{this.info.firstName}}</p>
+        <p>Отчество: {{this.info.thirdName}}</p>
+        <p>Дата рождения: {{this.info.birthDate}}</p>
+        <p>Пол: {{this.info.gender}}</p>
+        <p>Группа клиентов: {{this.info.group.join(' | ')}}</p>
+        <p>Лечащий врач: {{this.info.doctor}}</p>
+        <p>Отправлять смс: {{this.info.sms? "НЕТ" : "ДА"}}</p>
+        <p>Индекс: {{this.info.index}}</p>
+        <p>Страна: {{this.info.country}}</p>
+        <p>Область: {{this.info.region}}</p>
+        <p>Город: {{this.info.city}}</p>
+        <p>Улица: {{this.info.street}}</p>
+        <p>Дом: {{this.info.house}}</p>
+        <p>Документ: {{this.info.docum}}</p>
+        <p>Серия: {{this.info.series}}</p>
+        <p>Номер: {{this.info.num}}</p>
+        <p>Кем выдан: {{this.info.whoGive}}</p>
+        <p>Дата выдачи: {{this.info.giveDate}}</p>-->
       </Modal>
     </div>
 
@@ -47,12 +51,12 @@
 
       <!-- Валидация фамилии -->
       <!-- Применяю класс ошибки, если инпут пустой или был стерт -->
-      <div class="group" :class="{error:!$v.secondName.required && $v.secondName.$dirty}">
+      <div class="group" :class="{error:!$v.info.secondName.required && $v.info.secondName.$dirty}">
         <input
-          v-model.trim="$v.secondName.$model"
-          :class="{error:!$v.secondName.required && $v.secondName.$dirty}"
+          v-model.trim="$v.info.secondName.$model"
+          :class="{error:!$v.info.secondName.required && $v.info.secondName.$dirty}"
         />
-        <div :class="{error:!$v.secondName.required && $v.secondName.$dirty}">
+        <div :class="{error:!$v.info.secondName.required && $v.info.secondName.$dirty}">
           <span>*</span>Фамилия
         </div>
       </div>
@@ -61,17 +65,17 @@
       <!-- Применяю класс ошибки, если инпут пустой или был стерт -->
       <div class="group">
         <input
-          v-model.trim="$v.firstName.$model"
-          :class="{error:!$v.firstName.required && $v.firstName.$dirty}"
+          v-model.trim="$v.info.firstName.$model"
+          :class="{error:!$v.info.firstName.required && $v.info.firstName.$dirty}"
         />
-        <div :class="{error:!$v.firstName.required && $v.firstName.$dirty}">
+        <div :class="{error:!$v.info.firstName.required && $v.info.firstName.$dirty}">
           <span>*</span>Имя
         </div>
       </div>
 
       <!-- Отчество -->
       <div class="group">
-        <input v-model.trim="thirdName" />
+        <input v-model.trim="info.thirdName" />
         <div>Отчество</div>
       </div>
 
@@ -80,7 +84,7 @@
       <div class="group">
         <input
           type="date"
-          v-model="birthDate"
+          v-model="info.birthDate"
           @input="$v.birthDateMask.$touch"
           :class="{error:!$v.birthDateMask.required && $v.birthDateMask.$dirty || $v.birthDateMask.$error}"
         />
@@ -96,18 +100,18 @@
       <div class="group">
         <input
           placeholder="Номер телефона"
-          v-model="phone"
+          v-model="info.phone"
           @input="acceptNumber"
-          :class="{error:this.phone.length != 14 && $v.phone.$dirty}"
+          :class="{error:this.info.phone.length != 14 && $v.info.phone.$dirty}"
         />
-        <div :class="{error:this.phone.length != 14 && $v.phone.$dirty}">
+        <div :class="{error:this.info.phone.length != 14 && $v.info.phone.$dirty}">
           <span>*</span>Номер телефона
         </div>
       </div>
 
       <!-- Пол -->
       <div class="group">
-        <input v-model.trim="gender" />
+        <input v-model.trim="info.gender" />
         <div>Пол</div>
       </div>
 
@@ -117,23 +121,25 @@
         <select
           multiple
           @mousedown="chooseClient"
-          v-model="group"
-          :class="{error:this.group.length == 0 && !$v.group.required && $v.group.$dirty}"
+          v-model="info.group"
+          :class="{error:this.info.group.length == 0 && !$v.info.group.required && $v.info.group.$dirty}"
         >
           <option value="VIP">VIP</option>
           <option value="Проблемные">Проблемные</option>
           <option value="ОМС">ОМС</option>
         </select>
-        <div :class="{error:this.group.length == 0 && !$v.group.required && $v.group.$dirty}">
+        <div
+          :class="{error:this.info.group.length == 0 && !$v.info.group.required && $v.info.group.$dirty}"
+        >
           <span>*</span>Группа клиентов
           <!-- Вывод выбранной группы -->
         </div>
-        <div v-for="item in group" :key="item">- {{item}}</div>
+        <div v-for="item in info.group" :key="item">- {{item}}</div>
       </div>
 
       <!-- Лечащий врач -->
       <div class="group">
-        <select v-model="doctor">
+        <select v-model="info.doctor">
           <option>Иванов</option>
           <option>Захаров</option>
           <option>Чернышева</option>
@@ -143,7 +149,7 @@
 
       <!-- Смс -->
       <div class="group">
-        <input type="checkbox" v-model="sms" />
+        <input type="checkbox" v-model="info.sms" />
         Не отправлять СМС
       </div>
     </div>
@@ -154,40 +160,43 @@
 
       <!-- Индекс -->
       <div class="group">
-        <input v-model.trim="index" />
+        <input v-model.trim="info.index" />
         <div>Индекс</div>
       </div>
 
       <!-- Страна -->
       <div class="group">
-        <input v-model.trim="country" />
+        <input v-model.trim="info.country" />
         <div>Страна</div>
       </div>
 
       <!-- Область -->
       <div class="group">
-        <input v-model.trim="region" />
+        <input v-model.trim="info.region" />
         <div>Область</div>
       </div>
 
       <!-- Валидация города -->
       <!-- Применяю класс ошибки, если инпут пустой или был стерт -->
       <div class="group">
-        <input v-model.trim="$v.city.$model" :class="{error:!$v.city.required && $v.city.$dirty}" />
-        <div :class="{error:!$v.city.required && $v.city.$dirty}">
+        <input
+          v-model.trim="$v.info.city.$model"
+          :class="{error:!$v.info.city.required && $v.info.city.$dirty}"
+        />
+        <div :class="{error:!$v.info.city.required && $v.info.city.$dirty}">
           <span>*</span>Город
         </div>
       </div>
 
       <!-- Улица -->
       <div class="group">
-        <input v-model.trim="street" />
+        <input v-model.trim="info.street" />
         <div>Улица</div>
       </div>
 
       <!-- Дом -->
       <div class="group">
-        <input v-model.trim="house" />
+        <input v-model.trim="info.house" />
         <div>Дом</div>
       </div>
     </div>
@@ -198,7 +207,7 @@
 
       <!-- Тип документа -->
       <div div class="group">
-        <select v-model="docum">
+        <select v-model="info.docum">
           <option>Паспорт</option>
           <option>Свидетельство о рождении</option>
           <option>Вод. удостоверение</option>
@@ -210,19 +219,19 @@
 
       <!-- Серия -->
       <div class="group">
-        <input v-model.trim="series" />
+        <input v-model.trim="info.series" />
         <div>Серия</div>
       </div>
 
       <!-- Номер -->
       <div class="group">
-        <input v-model.trim="num" />
+        <input v-model.trim="info.num" />
         <div>Номер</div>
       </div>
 
       <!-- Кем выдан -->
       <div class="group">
-        <input v-model.trim="whoGive" />
+        <input v-model.trim="info.whoGive" />
         <div>Кем выдан</div>
       </div>
 
@@ -231,9 +240,9 @@
       <div class="group">
         <input
           type="date"
-          v-model="giveDate"
+          v-model="info.giveDate"
           @input="$v.giveDateMask.$touch"
-          :class="{error:!$v.giveDateMask.required && $v.giveDateMask.$dirty || $v.giveDateMask.$error}"
+          :class="{error:!$v.giveDateMask.required && $v.giveDateMask.$dirty }"
         />
         <div
           :class="{error:!$v.giveDateMask.required && $v.giveDateMask.$dirty || $v.giveDateMask.$error}"
@@ -260,44 +269,48 @@ export default {
     return {
       steps: 1, //Шаги для переключения между частями формы
       modal: false, //Для вызова модалки
-      secondName: "",
-      firstName: "",
-      thirdName: "", //Отчество
-      birthDate: ourDate,
-      phone: "7",
-      gender: "",
-      group: [],
-      doctor: "Иванов",
-      sms: false,
-      giveDate: ourDate,
-      index: "",
-      country: "",
-      region: "",
-      city: "",
-      street: "",
-      house: "",
-      docum: "Паспорт",
-      series: "",
-      num: "",
-      whoGive: "",
+      info: {
+        secondName: "",
+        firstName: "",
+        thirdName: "", //Отчество
+        birthDate: ourDate,
+        phone: "7",
+        gender: "",
+        group: [],
+        doctor: "Иванов",
+        sms: false,
+        giveDate: ourDate,
+        index: "",
+        country: "",
+        region: "",
+        city: "",
+        street: "",
+        house: "",
+        docum: "Паспорт",
+        series: "",
+        num: "",
+        whoGive: "",
+      },
     };
   },
   components: {
     Modal, //Зарегестрировал Модалку
   },
   validations: {
-    // Указываю параметры валидации для контректного поля, (required - не должна быть пустой)
-    secondName: { required },
-    firstName: { required },
+    info: {
+      // Указываю параметры валидации для контректного поля, (required - не должна быть пустой)
+      secondName: { required },
+      firstName: { required },
+      phone: { required },
+      group: { required },
+      city: { required },
+    },
     birthDateMask: {
       // Дата должна быть заполнена, не должна быть больше текущего и меньше 1900 года
       required,
       maxValue: maxValue(new Date()),
       minValue: minValue(new Date("1900-01-01")),
     },
-    phone: { required },
-    group: { required },
-    city: { required },
     giveDateMask: {
       required,
       maxValue: maxValue(new Date()),
@@ -307,8 +320,8 @@ export default {
   methods: {
     // Проверка на валидность всех полей, которые я указал
     submitForm() {
-      if (this.$v.$invalid) {
-        this.$v.$touch(); // Если есть что-то не валидное, то показываю какие
+      if (this.$v.info.$invalid) {
+        this.$v.info.$touch(); // Если есть что-то не валидное, то показываю какие
         this.steps = 1; // Переключаюсь на первую часть
         return;
       } else {
@@ -330,12 +343,12 @@ export default {
 
     // Использую регулярки для маски телефона
     acceptNumber() {
-      let x = this.phone
+      let x = this.info.phone
         .replace(/\D/g, "") //Удаляю все кроме цифр
         .match(/(\d{0,1})(\d{0,3})(\d{0,3})(\d{0,4})/); //Маска
       if (x[1] !== 7) x[1] = 7; //Первый символ всегда будет 7
       //Так как получается массив, то я вывожу его правильно последовательностью
-      this.phone = !x[2]
+      this.info.phone = !x[2]
         ? x[1]
         : x[1] +
           "-" +
@@ -356,11 +369,11 @@ export default {
         // Если атрибут был выбран, то удаляю его из массивы групп
         if (el.hasAttribute("selected")) {
           el.removeAttribute("selected");
-          this.group.splice(this.group.indexOf(el.value), 1);
+          this.info.group.splice(this.info.group.indexOf(el.value), 1);
         } else {
           // Или наоборот добавляю выбранную группу
           el.setAttribute("selected", "");
-          this.group.push(el.value);
+          this.info.group.push(el.value);
         }
       }
     },
@@ -378,97 +391,13 @@ export default {
   computed: {
     // Через эти свойства возвращаем либо правильную дату, либо ничего
     birthDateMask() {
-      return this.birthDate ? new Date(this.birthDate) : null;
+      return this.info.birthDate ? new Date(this.info.birthDate) : null;
     },
 
     // Через эти свойства возвращаем либо правильную дату, либо ничего
     giveDateMask() {
-      return this.giveDate ? new Date(this.giveDate) : null;
+      return this.info.giveDate ? new Date(this.info.giveDate) : null;
     },
-  },
-
-  // Здесь просто работа с LocalStorage (Каждый раз записываю изменения в LocalStorage)
-  watch: {
-    firstName(newInput) {
-      localStorage.firstName = newInput;
-    },
-    secondName(newInput) {
-      localStorage.secondName = newInput;
-    },
-    thirdName(newInput) {
-      localStorage.thirdName = newInput;
-    },
-    birthDate(newInput) {
-      localStorage.birthDate = newInput;
-    },
-    phone(newInput) {
-      localStorage.phone = newInput;
-    },
-    gender(newInput) {
-      localStorage.gender = newInput;
-    },
-    doctor(newInput) {
-      localStorage.doctor = newInput;
-    },
-    sms(newInput) {
-      localStorage.sms = newInput;
-    },
-    index(newInput) {
-      localStorage.index = newInput;
-    },
-    country(newInput) {
-      localStorage.country = newInput;
-    },
-    region(newInput) {
-      localStorage.region = newInput;
-    },
-    city(newInput) {
-      localStorage.city = newInput;
-    },
-    street(newInput) {
-      localStorage.street = newInput;
-    },
-    house(newInput) {
-      localStorage.house = newInput;
-    },
-    docum(newInput) {
-      localStorage.docum = newInput;
-    },
-    series(newInput) {
-      localStorage.series = newInput;
-    },
-    num(newInput) {
-      localStorage.num = newInput;
-    },
-    whoGive(newInput) {
-      localStorage.whoGive = newInput;
-    },
-    giveDate(newInput) {
-      localStorage.giveDate = newInput;
-    },
-  },
-
-  // Считываю из LocalStorage, если он не пустой
-  mounted() {
-    if (localStorage.firstName) this.firstName = localStorage.firstName;
-    if (localStorage.secondName) this.secondName = localStorage.secondName;
-    if (localStorage.thirdName) this.thirdName = localStorage.thirdName;
-    if (localStorage.birthDate) this.birthDate = localStorage.birthDate;
-    if (localStorage.phone) this.phone = localStorage.phone;
-    if (localStorage.gender) this.gender = localStorage.gender;
-    if (localStorage.doctor) this.doctor = localStorage.doctor;
-    if (localStorage.sms) this.sms = localStorage.sms;
-    if (localStorage.index) this.index = localStorage.index;
-    if (localStorage.country) this.country = localStorage.country;
-    if (localStorage.region) this.region = localStorage.region;
-    if (localStorage.city) this.city = localStorage.city;
-    if (localStorage.street) this.street = localStorage.street;
-    if (localStorage.house) this.house = localStorage.house;
-    if (localStorage.docum) this.docum = localStorage.docum;
-    if (localStorage.series) this.series = localStorage.series;
-    if (localStorage.num) this.num = localStorage.num;
-    if (localStorage.whoGive) this.whoGive = localStorage.whoGive;
-    if (localStorage.giveDate) this.giveDate = localStorage.giveDate;
   },
 };
 </script>
@@ -585,7 +514,6 @@ export default {
     }
   }
 }
-
 
 // Отключаю значок календаря
 ::-webkit-calendar-picker-indicator {
