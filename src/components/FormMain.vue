@@ -391,7 +391,6 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
   flex-wrap: wrap;
   .basic,
   .adress,
