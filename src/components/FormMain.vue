@@ -7,25 +7,6 @@
           v-for="(name, value) in info"
           :key="value"
         >{{value }} : {{ name !== "" ? name : "Не заполнено" }}</div>
-        <!-- <p>Фамилия: {{this.info.secondName}}</p>
-        <p>Имя: {{this.info.firstName}}</p>
-        <p>Отчество: {{this.info.thirdName}}</p>
-        <p>Дата рождения: {{this.info.birthDate}}</p>
-        <p>Пол: {{this.info.gender}}</p>
-        <p>Группа клиентов: {{this.info.group.join(' | ')}}</p>
-        <p>Лечащий врач: {{this.info.doctor}}</p>
-        <p>Отправлять смс: {{this.info.sms? "НЕТ" : "ДА"}}</p>
-        <p>Индекс: {{this.info.index}}</p>
-        <p>Страна: {{this.info.country}}</p>
-        <p>Область: {{this.info.region}}</p>
-        <p>Город: {{this.info.city}}</p>
-        <p>Улица: {{this.info.street}}</p>
-        <p>Дом: {{this.info.house}}</p>
-        <p>Документ: {{this.info.docum}}</p>
-        <p>Серия: {{this.info.series}}</p>
-        <p>Номер: {{this.info.num}}</p>
-        <p>Кем выдан: {{this.info.whoGive}}</p>
-        <p>Дата выдачи: {{this.info.giveDate}}</p>-->
       </Modal>
     </div>
 
@@ -327,7 +308,6 @@ export default {
       } else {
         //Если все ок, то показываю модалку
         this.showModal();
-        this.steps = 2; //Просто переключаюсь на вторую часть (можно и не переключаться)
       }
     },
 
@@ -410,6 +390,8 @@ export default {
   text-transform: uppercase;
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   .basic,
   .adress,
@@ -466,7 +448,7 @@ export default {
         transition-delay: 0.1s;
         user-select: none;
         &:hover {
-          color: gray;
+          color: white;
         }
       }
     }

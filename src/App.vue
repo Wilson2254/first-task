@@ -24,6 +24,8 @@ export default {
   font-family: "Vollkorn SC", serif;
   margin: 0;
   padding: 0;
-  background: #CCCCFF	;
+      background: gray	;
 }
+
+
 </style>
